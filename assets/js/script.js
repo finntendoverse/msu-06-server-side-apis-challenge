@@ -16,10 +16,27 @@ searchButton.addEventListener("click", function(event) {
         country: countryInput
     }
     
-    userSearches.unshift(userSearch);
+    userSearches.unshift(JSON.stringify(userSearch));
 
     localStorage.setItem("userSearches", userSearches);
+
+    let recentSearches = document.querySelector("#placeholder");
+    let pastSearch = document.createElement("button");
+    pastSearch.innerHTML = userSearch.city;
+    recentSearches.prepend(pastSearch);
+
+
+    document.querySelector("#city").value = "";
+    document.querySelector("#state").value = "";
+    document.querySelector("#country").value = "";
 });
+
+// //on document load {
+//     let recentSearches = document.querySelector("#recent-searches");
+//     let pastSearch = document.createElement("button");
+//     pastSearch.innerHTML = userSearch.city;
+//     recentSearches.appendChild(localStorage.getItem("userSearches"));
+// }
 
 // Let users input cities, but they should only be able to input a city from my city.list.json object
 
