@@ -20,7 +20,7 @@ WHEN I click on a city in the search history<br>
 THEN I am again presented with current and future conditions for that city
 
 ## Credits
-
+city.list.json came from [OpenWeather](https://bulk.openweathermap.org/sample/)
 
 ## Deployed Application
 [Deployed Application Link]()
