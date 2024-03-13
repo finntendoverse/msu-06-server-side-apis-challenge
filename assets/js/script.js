@@ -1,5 +1,21 @@
 const OpenWeatherAPIKey = "46b81e893d3ffba91a8b72288469ebe6";
 
+window.onload = function() {
+    let savedSearches = JSON.parse(localStorage.getItem("userSearches"));
+    
+    if (savedSearches) {
+        savedSearches.forEach(search => {
+            let recentSearches = document.querySelector("#placeholder");
+            let pastSearch = document.createElement("button");
+            pastSearch.innerHTML = search.city;
+            recentSearches.append(pastSearch);
+        });
+        localStorage.setItem("userSearches", JSON.stringify(savedSearches));
+        userSearches = savedSearches;
+        console.log(userSearches);
+    }
+}
+
 let userSearches = [];
 let searchButton = document.querySelector("#search");
 
@@ -16,9 +32,9 @@ searchButton.addEventListener("click", function(event) {
         country: countryInput
     }
     
-    userSearches.unshift(JSON.stringify(userSearch));
+    userSearches.unshift(userSearch);
 
-    localStorage.setItem("userSearches", userSearches);
+    localStorage.setItem("userSearches", JSON.stringify(userSearches));
 
     let recentSearches = document.querySelector("#placeholder");
     let pastSearch = document.createElement("button");
@@ -30,13 +46,6 @@ searchButton.addEventListener("click", function(event) {
     document.querySelector("#state").value = "";
     document.querySelector("#country").value = "";
 });
-
-// //on document load {
-//     let recentSearches = document.querySelector("#recent-searches");
-//     let pastSearch = document.createElement("button");
-//     pastSearch.innerHTML = userSearch.city;
-//     recentSearches.appendChild(localStorage.getItem("userSearches"));
-// }
 
 // Let users input cities, but they should only be able to input a city from my city.list.json object
 
