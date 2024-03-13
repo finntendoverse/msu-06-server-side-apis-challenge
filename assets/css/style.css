@@ -58,3 +58,7 @@ button {
   flex: 0 0 80%;
   margin: 0px 40px 0px 40px;
 }
+
+.city-overview {
+  border: 10px solid black;
+}
