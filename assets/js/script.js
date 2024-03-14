@@ -1,5 +1,10 @@
+// Global variables to be used in functions
+let userSearches = [];
+let searchButton = document.querySelector("#search");
+
 window.onload = function() {        // WHEN the page loads
     renderPastSearches();           // THEN the saved search history is displayed
+    viewPastSearch();               // THEN the locations in the search history can be searched again by clicking the buttons
 }
 
 renderPastSearches = function() {                                               // WHEN the renderPastSearches function is called
@@ -7,20 +12,24 @@ renderPastSearches = function() {                                               
     let recentSearches = document.querySelector("#placeholder");                // THEN the search history placeholder spot is targeted
     
     if (savedSearches) {                                                        // IF there are saved searches
-        savedSearches.forEach(search => {                                       // FOR EACH saved search
+        savedSearches.forEach(userSearch => {                                   // FOR EACH saved search
             let pastSearch = document.createElement("button");                  // THEN a button element is created
-            pastSearch.innerHTML = search.city;                                 // THEN the city's name becomes the button text
+            pastSearch.innerHTML = userSearch;                                  // THEN the city's name becomes the button text
             recentSearches.append(pastSearch);                                  // THEN the button is added into the placeholder spot
         });
-        localStorage.setItem("userSearches", JSON.stringify(savedSearches));    // THEN the user searches are re-saved in local storage
         userSearches = savedSearches;                                           // THEN the saved searches and the user searches are merged into one variable
     }
 }
 
-// Global variables to be used in functions
-let userSearch = {};
-let userSearches = [];
-let searchButton = document.querySelector("#search");
+viewPastSearch = function(userSearch) {                                         // WHEN the viewPastSearch function is called
+    let searchHistory = document.querySelectorAll("#placeholder button");       // THEN the buttons in the placeholder section on the page are referenced
+    searchHistory.forEach((button) => {                                         // FOR EACH button in the placeholder section
+        button.addEventListener("click", function() {                           // WHEN the user clicks on a past search
+            userSearch = button.innerHTML;                                      // THEN the city on the button becomes the search criteria
+            displayWeather(userSearch);                                         // THEN the forecast for that city is displayed on the page
+        })
+    })
+}
 
 searchButton.addEventListener("click", function(event) {        // WHEN the search button is clicked
     event.preventDefault();                                     // THEN the page will not refresh
@@ -28,36 +37,26 @@ searchButton.addEventListener("click", function(event) {        // WHEN the sear
 });
 
 handleNewSearch = function() {                                              // WHEN the handleSearchFunction function is called
-    let cityInput = document.querySelector("#city").value;                  // THEN the user's city input is referenced
-    // let stateInput = document.querySelector("#state").value;
-    // let countryInput = document.querySelector("#country").value;
-
-    userSearch = {                                                          // THEN the user's inputted data is stored in an object
-        city: cityInput,
-        // state: stateInput,
-        // country: countryInput
-    }
+    let userSearch = document.querySelector("#city").value;                 // THEN the user's city input is referenced
     
     userSearches.unshift(userSearch);                                       // THEN the userSearch object is pushed to the front of the userSearches array
     localStorage.setItem("userSearches", JSON.stringify(userSearches));     // THEN the user's search is stored in local storage
+    document.querySelector("#city").value = "";                             // THEN the inputted text is removed from the city field so the text placeholder is shown
     renderSearchHistory(userSearch);                                        // THEN the user's search history is updated on the page
-    displayWeather(userSearch);                                             // THEN the weather of the searched location is displayed on the page
+    displayWeather(userSearch);                                             // THEN the locations in the search history can be searched again by clicking the buttons
 }
 
 renderSearchHistory = function(userSearch) {                                // WHEN the renderSearchHistory function is called
     let recentSearches = document.querySelector("#placeholder");            // THEN the search history placeholder spot is targeted
     let pastSearch = document.createElement("button");                      // THEN a button element is created
-    pastSearch.innerHTML = userSearch.city;                                 // THEN the city's name becomes the button text
+    pastSearch.innerHTML = userSearch;                                      // THEN the city's name becomes the button text
     recentSearches.prepend(pastSearch);                                     // THEN the button is added into the placeholder spot
-
-    document.querySelector("#city").value = "";                             // THEN the inputted text is removed from the city field so the text placeholder is shown
-    // document.querySelector("#state").value = "";
-    // document.querySelector("#country").value = "";
+    viewPastSearch()                                                        // THEN the buttons will display the weather information when clicked
 }
 
 displayWeather = function(userSearch) {
     const OpenWeatherAPIKey = "46b81e893d3ffba91a8b72288469ebe6";
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${userSearch.city}&appid=${OpenWeatherAPIKey}&units=imperial`
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${userSearch}&appid=${OpenWeatherAPIKey}&units=imperial`
     fetch(url)
     .then(function (response) {
             return response.json();
@@ -213,25 +212,3 @@ displayWeather = function(userSearch) {
             console.log("There was a problem with the fetch operation");
         });
 }
-
-viewPastSearch = function(userSearch) {
-    let searchHistory = document.querySelectorAll("#placeholder button");
-
-    searchHistory.forEach((button) => {
-        let buttonCity = button.innerHTML
-        button.addEventListener("click", function() {
-            console.log(buttonCity);
-            userSearch = button.city;
-            displayWeather();
-        })
-    })
-    
-}
-
-//Ideas
-    // Let users input cities, but they should only be able to input a city from my city.list.json object
-
-    // IF the city matches a city on the city.list.json AND the state matches
-    // fetch API for that city
-
-    // IF the city matches a city on the city.list.json AND the country matches
