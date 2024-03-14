@@ -27,32 +27,32 @@ searchButton.addEventListener("click", function(event) {        // WHEN the sear
     handleNewSearch();                                          // THEN it will handle the search function
 });
 
-handleNewSearch = function() {
-    let cityInput = document.querySelector("#city").value;
-    let stateInput = document.querySelector("#state").value;
-    let countryInput = document.querySelector("#country").value;
+handleNewSearch = function() {                                              // WHEN the handleSearchFunction function is called
+    let cityInput = document.querySelector("#city").value;                  // THEN the user's city input is referenced
+    // let stateInput = document.querySelector("#state").value;
+    // let countryInput = document.querySelector("#country").value;
 
-    userSearch = {
+    userSearch = {                                                          // THEN the user's inputted data is stored in an object
         city: cityInput,
-        state: stateInput,
-        country: countryInput
+        // state: stateInput,
+        // country: countryInput
     }
     
-    userSearches.unshift(userSearch);
-    localStorage.setItem("userSearches", JSON.stringify(userSearches));
-    renderSearchHistory(userSearch);
-    displayWeather(userSearch);
+    userSearches.unshift(userSearch);                                       // THEN the userSearch object is pushed to the front of the userSearches array
+    localStorage.setItem("userSearches", JSON.stringify(userSearches));     // THEN the user's search is stored in local storage
+    renderSearchHistory(userSearch);                                        // THEN the user's search history is updated on the page
+    displayWeather(userSearch);                                             // THEN the weather of the searched location is displayed on the page
 }
 
-renderSearchHistory = function(userSearch) {
-    let recentSearches = document.querySelector("#placeholder");
-    let pastSearch = document.createElement("button");
-    pastSearch.innerHTML = userSearch.city;
-    recentSearches.prepend(pastSearch);
+renderSearchHistory = function(userSearch) {                                // WHEN the renderSearchHistory function is called
+    let recentSearches = document.querySelector("#placeholder");            // THEN the search history placeholder spot is targeted
+    let pastSearch = document.createElement("button");                      // THEN a button element is created
+    pastSearch.innerHTML = userSearch.city;                                 // THEN the city's name becomes the button text
+    recentSearches.prepend(pastSearch);                                     // THEN the button is added into the placeholder spot
 
-    document.querySelector("#city").value = "";
-    document.querySelector("#state").value = "";
-    document.querySelector("#country").value = "";
+    document.querySelector("#city").value = "";                             // THEN the inputted text is removed from the city field so the text placeholder is shown
+    // document.querySelector("#state").value = "";
+    // document.querySelector("#country").value = "";
 }
 
 displayWeather = function(userSearch) {
@@ -65,11 +65,29 @@ displayWeather = function(userSearch) {
         .then(function (data) {
             // current forecast
             let currentConditions = document.querySelector("#current-conditions");
+            let day1Conditions = document.querySelector("#day-1-forecast");
+            let day2Conditions = document.querySelector("#day-2-forecast");
+            let day3Conditions = document.querySelector("#day-3-forecast");
+            let day4Conditions = document.querySelector("#day-3-forecast");
+            let day5Conditions = document.querySelector("#day-3-forecast");
 
-            if (currentConditions.firstChild) {
-                while (currentConditions.firstChild) {
-                    currentConditions.removeChild(currentConditions.firstChild);
-                }
+            while (currentConditions.firstChild) {
+                currentConditions.removeChild(currentConditions.firstChild);
+            }
+            while (day1Conditions.firstChild) {
+                day1Conditions.removeChild(day1Conditions.firstChild)
+            }
+            while (day2Conditions.firstChild) {
+                day2Conditions.removeChild(day2Conditions.firstChild)
+            }
+            while (day3Conditions.firstChild) {
+                day3Conditions.removeChild(day3Conditions.firstChild);
+            }
+            while (day4Conditions.firstChild) {
+                day4Conditions.removeChild(day4Conditions.firstChild);
+            }
+            while (day5Conditions.firstChild) {
+                day5Conditions.removeChild(day5Conditions.firstChild);
             }
 
             let currentInfo = document.createElement("h3");
@@ -92,7 +110,6 @@ displayWeather = function(userSearch) {
             currentConditions.appendChild(currentHumidity);
 
             // day 1 forecast
-            let day1Conditions = document.querySelector("#day-1-forecast");
             let day1Info = document.createElement("h3");
             day1Info.innerHTML = data.list[7].dt_txt;
             let day1Icon = document.createElement("img");
@@ -113,7 +130,6 @@ displayWeather = function(userSearch) {
             day1Conditions.appendChild(day1Humidity);
 
             // day 2 forecast
-            let day2Conditions = document.querySelector("#day-2-forecast");
             let day2Info = document.createElement("h3");
             day2Info.innerHTML = data.list[15].dt_txt;
             let day2Icon = document.createElement("img");
@@ -134,7 +150,6 @@ displayWeather = function(userSearch) {
             day2Conditions.appendChild(day2Humidity);
 
             // day 3 forecast
-            let day3Conditions = document.querySelector("#day-3-forecast");
             let day3Info = document.createElement("h3");
             day3Info.innerHTML = data.list[23].dt_txt;
             let day3Icon = document.createElement("img");
@@ -155,7 +170,6 @@ displayWeather = function(userSearch) {
             day3Conditions.appendChild(day3Humidity);
 
             // day 4 forecast
-            let day4Conditions = document.querySelector("#day-3-forecast");
             let day4Info = document.createElement("h3");
             day4Info.innerHTML = data.list[31].dt_txt;
             let day4Icon = document.createElement("img");
@@ -176,7 +190,6 @@ displayWeather = function(userSearch) {
             day4Conditions.appendChild(day4Humidity);
 
             // day 5 forecast
-            let day5Conditions = document.querySelector("#day-3-forecast");
             let day5Info = document.createElement("h3");
             day5Info.innerHTML = data.list[39].dt_txt;
             let day5Icon = document.createElement("img");
@@ -199,6 +212,20 @@ displayWeather = function(userSearch) {
         .catch(function (error) {
             console.log("There was a problem with the fetch operation");
         });
+}
+
+viewPastSearch = function(userSearch) {
+    let searchHistory = document.querySelectorAll("#placeholder button");
+
+    searchHistory.forEach((button) => {
+        let buttonCity = button.innerHTML
+        button.addEventListener("click", function() {
+            console.log(buttonCity);
+            userSearch = button.city;
+            displayWeather();
+        })
+    })
+    
 }
 
 //Ideas
