@@ -54,161 +54,163 @@ renderSearchHistory = function(userSearch) {                                // W
     viewPastSearch()                                                        // THEN the buttons will display the weather information when clicked
 }
 
-displayWeather = function(userSearch) {
-    const OpenWeatherAPIKey = "46b81e893d3ffba91a8b72288469ebe6";
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${userSearch}&appid=${OpenWeatherAPIKey}&units=imperial`
-    fetch(url)
-    .then(function (response) {
-            return response.json();
+displayWeather = function(userSearch) {                                                                                             // WHEN the displayWeather function is called
+    const OpenWeatherAPIKey = "46b81e893d3ffba91a8b72288469ebe6";                                                                   // THEN my API key is stored in a variable
+    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${userSearch}&appid=${OpenWeatherAPIKey}&units=imperial`        // THEN the link to the API is saved
+    fetch(url)                                                                                                                      // THEN the API is fetched
+    .then(function (response) {                                                                                                     // IF the fetch is successful
+            return response.json();                                                                                                 // THEN the response is returned as a JSON object
         })
         .then(function (data) {
-            // current forecast
-            let currentConditions = document.querySelector("#current-conditions");
-            let day1Conditions = document.querySelector("#day-1-forecast");
-            let day2Conditions = document.querySelector("#day-2-forecast");
-            let day3Conditions = document.querySelector("#day-3-forecast");
-            let day4Conditions = document.querySelector("#day-3-forecast");
-            let day5Conditions = document.querySelector("#day-3-forecast");
+            // appending sections
+            let currentConditions = document.querySelector("#current-conditions");                                                  // THEN the current conditions section is stored in a variable
+            let day1Conditions = document.querySelector("#day-1-forecast");                                                         // THEN the day 1 conditions section is stored in a variable
+            let day2Conditions = document.querySelector("#day-2-forecast");                                                         // THEN the day 2 conditions section is stored in a variable
+            let day3Conditions = document.querySelector("#day-3-forecast");                                                         // THEN the day 3 conditions section is stored in a variable
+            let day4Conditions = document.querySelector("#day-3-forecast");                                                         // THEN the day 4 conditions section is stored in a variable
+            let day5Conditions = document.querySelector("#day-3-forecast");                                                         // THEN the day 5 conditions section is stored in a variable
 
-            while (currentConditions.firstChild) {
-                currentConditions.removeChild(currentConditions.firstChild);
+            // remove last search from page
+            while (currentConditions.firstChild) {                                                                                  // WHILE the current conditions section had appended children
+                currentConditions.removeChild(currentConditions.firstChild);                                                        // THEN they are all removed
             }
-            while (day1Conditions.firstChild) {
-                day1Conditions.removeChild(day1Conditions.firstChild)
+            while (day1Conditions.firstChild) {                                                                                     // WHILE the day 1 conditions section had appended children
+                day1Conditions.removeChild(day1Conditions.firstChild)                                                               // THEN they are all removed
             }
-            while (day2Conditions.firstChild) {
-                day2Conditions.removeChild(day2Conditions.firstChild)
+            while (day2Conditions.firstChild) {                                                                                     // WHILE the day 2 conditions section had appended children
+                day2Conditions.removeChild(day2Conditions.firstChild)                                                               // THEN they are all removed
             }
-            while (day3Conditions.firstChild) {
-                day3Conditions.removeChild(day3Conditions.firstChild);
+            while (day3Conditions.firstChild) {                                                                                     // WHILE the day 3 conditions section had appended children
+                day3Conditions.removeChild(day3Conditions.firstChild);                                                              // THEN they are all removed
             }
-            while (day4Conditions.firstChild) {
-                day4Conditions.removeChild(day4Conditions.firstChild);
+            while (day4Conditions.firstChild) {                                                                                     // WHILE the day 4 conditions section had appended children
+                day4Conditions.removeChild(day4Conditions.firstChild);                                                              // THEN they are all removed
             }
-            while (day5Conditions.firstChild) {
-                day5Conditions.removeChild(day5Conditions.firstChild);
+            while (day5Conditions.firstChild) {                                                                                     // WHILE the day 5 conditions section had appended children
+                day5Conditions.removeChild(day5Conditions.firstChild);                                                              // THEN they are all removed
             }
 
-            let currentInfo = document.createElement("h3");
-            currentInfo.innerHTML = data.city.name + " " + data.list[0].dt_txt;
-            let currentIcon = document.createElement("img");
-            currentIcon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`);
-            currentInfo.appendChild(currentIcon);
-            currentConditions.appendChild(currentInfo);
+            // add current forecast to page
+            let currentInfo = document.createElement("h3");                                                                         // THEN an h3 element is created
+            currentInfo.innerHTML = data.city.name + " " + data.list[0].dt_txt;                                                     // THEN the text of the h3 element becomes the city name and current date/time
+            let currentIcon = document.createElement("img");                                                                        // THEN an image element is created
+            currentIcon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`);               // THEN the image source becomes the current weather's icon
+            currentInfo.appendChild(currentIcon);                                                                                   // THEN the image is appended to the h3
+            currentConditions.appendChild(currentInfo);                                                                             // THEN the h3 is appended to the current conditions section
 
-            let currentTemp = document.createElement("p");
-            currentTemp.innerHTML = "Temperature: " + data.list[0].main.temp + "°F";
-            currentConditions.appendChild(currentTemp);
+            let currentTemp = document.createElement("p");                                                                          // THEN a p element is created
+            currentTemp.innerHTML = "Temperature: " + data.list[0].main.temp + "°F";                                                // THEN the text of the p element becomes the current temperature
+            currentConditions.appendChild(currentTemp);                                                                             // THEN the p element is appended to the current conditions section
 
-            let currentWind = document.createElement("p");
-            currentWind.innerHTML = "Wind speed: " + data.list[0].wind.speed + " MPH";
-            currentConditions.appendChild(currentWind);
+            let currentWind = document.createElement("p");                                                                          // THEN a p element is created
+            currentWind.innerHTML = "Wind speed: " + data.list[0].wind.speed + " MPH";                                              // THEN the text of the p element becomes the current wind speed
+            currentConditions.appendChild(currentWind);                                                                             // THEN the p element is appended to the current conditions section
 
-            let currentHumidity = document.createElement("p");
-            currentHumidity.innerHTML = "Humidity: " + data.list[0].main.humidity + "%";
-            currentConditions.appendChild(currentHumidity);
+            let currentHumidity = document.createElement("p");                                                                      // THEN a p element is created
+            currentHumidity.innerHTML = "Humidity: " + data.list[0].main.humidity + "%";                                            // THEN the text of the p element becomes the current humidity
+            currentConditions.appendChild(currentHumidity);                                                                         // THEN the p element is appended to the current conditions section
 
-            // day 1 forecast
-            let day1Info = document.createElement("h3");
-            day1Info.innerHTML = data.list[7].dt_txt;
-            let day1Icon = document.createElement("img");
-            day1Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[7].weather[0].icon}.png`);
-            day1Info.appendChild(day1Icon);
-            day1Conditions.appendChild(day1Info);
+            // add day 1 forecast to page
+            let day1Info = document.createElement("h3");                                                                            // THEN an h3 element is created
+            day1Info.innerHTML = data.list[7].dt_txt;                                                                               // THEN the text of the h3 element becomes the day 1 date/time
+            let day1Icon = document.createElement("img");                                                                           // THEN an image element is created
+            day1Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[7].weather[0].icon}.png`);                  // THEN the image source becomes the day 1 weather's icon
+            day1Info.appendChild(day1Icon);                                                                                         // THEN the image is appended to the h3
+            day1Conditions.appendChild(day1Info);                                                                                   // THEN the h3 is appended to the day 1 conditions section
 
-            let day1Temp = document.createElement("p");
-            day1Temp.innerHTML = "Temperature: " + data.list[7].main.temp + "°F";
-            day1Conditions.appendChild(day1Temp);
+            let day1Temp = document.createElement("p");                                                                             // THEN a p element is created
+            day1Temp.innerHTML = "Temperature: " + data.list[7].main.temp + "°F";                                                   // THEN the text of the p element becomes the day 1 temperature
+            day1Conditions.appendChild(day1Temp);                                                                                   // THEN the p element is appended to the day 1 conditions section
 
-            let day1Wind = document.createElement("p");
-            day1Wind.innerHTML = "Wind speed: " + data.list[7].wind.speed + " MPH";
-            day1Conditions.appendChild(day1Wind);
+            let day1Wind = document.createElement("p");                                                                             // THEN a p element is created
+            day1Wind.innerHTML = "Wind speed: " + data.list[7].wind.speed + " MPH";                                                 // THEN the text of the p element becomes the day 1 wind speed
+            day1Conditions.appendChild(day1Wind);                                                                                   // THEN the p element is appended to the day 1 conditions section
 
-            let day1Humidity = document.createElement("p");
-            day1Humidity.innerHTML = "Humidity: " + data.list[7].main.humidity + "%";
-            day1Conditions.appendChild(day1Humidity);
+            let day1Humidity = document.createElement("p");                                                                         // THEN a p element is created
+            day1Humidity.innerHTML = "Humidity: " + data.list[7].main.humidity + "%";                                               // THEN the text of the p element becomes the day 1 humidity
+            day1Conditions.appendChild(day1Humidity);                                                                               // THEN the p element is appended to the day 1 conditions section
 
-            // day 2 forecast
-            let day2Info = document.createElement("h3");
-            day2Info.innerHTML = data.list[15].dt_txt;
-            let day2Icon = document.createElement("img");
-            day2Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[15].weather[0].icon}.png`);
-            day2Info.appendChild(day2Icon);
-            day2Conditions.appendChild(day2Info);
+            // add day 2 forecast to page
+            let day2Info = document.createElement("h3");                                                                            // THEN an h3 element is created
+            day2Info.innerHTML = data.list[15].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 2 date/time
+            let day2Icon = document.createElement("img");                                                                           // THEN an image element is created
+            day2Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[15].weather[0].icon}.png`);                 // THEN the image source becomes the day 2 weather's icon
+            day2Info.appendChild(day2Icon);                                                                                         // THEN the image is appended to the h3
+            day2Conditions.appendChild(day2Info);                                                                                   // THEN the h3 is appended to the day 2 conditions section
 
-            let day2Temp = document.createElement("p");
-            day2Temp.innerHTML = "Temperature: " + data.list[15].main.temp + "°F";
-            day2Conditions.appendChild(day2Temp);
+            let day2Temp = document.createElement("p");                                                                             // THEN a p element is created
+            day2Temp.innerHTML = "Temperature: " + data.list[15].main.temp + "°F";                                                  // THEN the text of the p element becomes the day 2 temperature
+            day2Conditions.appendChild(day2Temp);                                                                                   // THEN the p element is appended to the day 2 conditions section
 
-            let day2Wind = document.createElement("p");
-            day2Wind.innerHTML = "Wind speed: " + data.list[15].wind.speed + " MPH";
-            day2Conditions.appendChild(day2Wind);
+            let day2Wind = document.createElement("p");                                                                             // THEN a p element is created
+            day2Wind.innerHTML = "Wind speed: " + data.list[15].wind.speed + " MPH";                                                // THEN the text of the p element becomes the day 2 wind speed
+            day2Conditions.appendChild(day2Wind);                                                                                   // THEN the p element is appended to the day 2 conditions section
 
-            let day2Humidity = document.createElement("p");
-            day2Humidity.innerHTML = "Humidity: " + data.list[15].main.humidity + "%";
-            day2Conditions.appendChild(day2Humidity);
+            let day2Humidity = document.createElement("p");                                                                         // THEN a p element is created
+            day2Humidity.innerHTML = "Humidity: " + data.list[15].main.humidity + "%";                                              // THEN the text of the p element becomes the day 2 humidity
+            day2Conditions.appendChild(day2Humidity);                                                                               // THEN the p element is appended to the day 2 conditions section
 
-            // day 3 forecast
-            let day3Info = document.createElement("h3");
-            day3Info.innerHTML = data.list[23].dt_txt;
-            let day3Icon = document.createElement("img");
-            day3Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[23].weather[0].icon}.png`);
-            day3Info.appendChild(day3Icon);
-            day3Conditions.appendChild(day3Info);
+            // add day 3 forecast to page
+            let day3Info = document.createElement("h3");                                                                            // THEN an h3 element is created
+            day3Info.innerHTML = data.list[23].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 3 date/time
+            let day3Icon = document.createElement("img");                                                                           // THEN an image element is created
+            day3Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[23].weather[0].icon}.png`);                 // THEN the image source becomes the day 3 weather's icon
+            day3Info.appendChild(day3Icon);                                                                                         // THEN the image is appended to the h3
+            day3Conditions.appendChild(day3Info);                                                                                   // THEN the h3 is appended to the day 3 conditions section
 
-            let day3Temp = document.createElement("p");
-            day3Temp.innerHTML = "Temperature: " + data.list[23].main.temp + "°F";
-            day3Conditions.appendChild(day3Temp);
+            let day3Temp = document.createElement("p");                                                                             // THEN a p element is created
+            day3Temp.innerHTML = "Temperature: " + data.list[23].main.temp + "°F";                                                  // THEN the text of the p element becomes the day 3 temperature
+            day3Conditions.appendChild(day3Temp);                                                                                   // THEN the p element is appended to the day 3 conditions section
 
-            let day3Wind = document.createElement("p");
-            day3Wind.innerHTML = "Wind speed: " + data.list[23].wind.speed + " MPH";
-            day3Conditions.appendChild(day3Wind);
+            let day3Wind = document.createElement("p");                                                                             // THEN a p element is created
+            day3Wind.innerHTML = "Wind speed: " + data.list[23].wind.speed + " MPH";                                                // THEN the text of the p element becomes the day 3 wind speed
+            day3Conditions.appendChild(day3Wind);                                                                                   // THEN the p element is appended to the day 3 conditions section
+    
+            let day3Humidity = document.createElement("p");                                                                         // THEN a p element is created
+            day3Humidity.innerHTML = "Humidity: " + data.list[23].main.humidity + "%";                                              // THEN the text of the p element becomes the day 3 humidity
+            day3Conditions.appendChild(day3Humidity);                                                                               // THEN the p element is appended to the day 3 conditions section
 
-            let day3Humidity = document.createElement("p");
-            day3Humidity.innerHTML = "Humidity: " + data.list[23].main.humidity + "%";
-            day3Conditions.appendChild(day3Humidity);
+            // add day 4 forecast to page
+            let day4Info = document.createElement("h3");                                                                            // THEN an h3 element is created
+            day4Info.innerHTML = data.list[31].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 4 date/time
+            let day4Icon = document.createElement("img");                                                                           // THEN an image element is created
+            day4Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[31].weather[0].icon}.png`);                 // THEN the image source becomes the day 4 weather's icon
+            day4Info.appendChild(day4Icon);                                                                                         // THEN the image is appended to the h3
+            day4Conditions.appendChild(day4Info);                                                                                   // THEN the h3 is appended to the day 4 conditions section
 
-            // day 4 forecast
-            let day4Info = document.createElement("h3");
-            day4Info.innerHTML = data.list[31].dt_txt;
-            let day4Icon = document.createElement("img");
-            day4Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[31].weather[0].icon}.png`);
-            day4Info.appendChild(day4Icon);
-            day4Conditions.appendChild(day4Info);
+            let day4Temp = document.createElement("p");                                                                             // THEN a p element is created
+            day4Temp.innerHTML = "Temperature: " + data.list[31].main.temp + "°F";                                                  // THEN the text of the p element becomes the day 4 temperature
+            day4Conditions.appendChild(day4Temp);                                                                                   // THEN the p element is appended to the day 4 conditions section
 
-            let day4Temp = document.createElement("p");
-            day4Temp.innerHTML = "Temperature: " + data.list[31].main.temp + "°F";
-            day4Conditions.appendChild(day4Temp);
+            let day4Wind = document.createElement("p");                                                                             // THEN a p element is created
+            day4Wind.innerHTML = "Wind speed: " + data.list[31].wind.speed + " MPH";                                                // THEN the text of the p element becomes the day 4 wind speed
+            day4Conditions.appendChild(day4Wind);                                                                                   // THEN the p element is appended to the day 4 conditions section
+        
+            let day4Humidity = document.createElement("p");                                                                         // THEN a p element is created
+            day4Humidity.innerHTML = "Humidity: " + data.list[31].main.humidity + "%";                                              // THEN the text of the p element becomes the day 4 humidity
+            day4Conditions.appendChild(day4Humidity);                                                                               // THEN the p element is appended to the day 4 conditions section
 
-            let day4Wind = document.createElement("p");
-            day4Wind.innerHTML = "Wind speed: " + data.list[31].wind.speed + " MPH";
-            day4Conditions.appendChild(day4Wind);
+            // add day 5 forecast to page
+            let day5Info = document.createElement("h3");                                                                            // THEN an h3 element is created
+            day5Info.innerHTML = data.list[39].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 5 date/time
+            let day5Icon = document.createElement("img");                                                                           // THEN an image element is created
+            day5Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[39].weather[0].icon}.png`);                 // THEN the image source becomes the day 1 weather's icon
+            day5Info.appendChild(day5Icon);                                                                                         // THEN the image is appended to the h3
+            day5Conditions.appendChild(day5Info);                                                                                   // THEN the h3 is appended to the day 5 conditions section
 
-            let day4Humidity = document.createElement("p");
-            day4Humidity.innerHTML = "Humidity: " + data.list[31].main.humidity + "%";
-            day4Conditions.appendChild(day4Humidity);
+            let day5Temp = document.createElement("p");                                                                             // THEN a p element is created
+            day5Temp.innerHTML = "Temperature: " + data.list[39].main.temp + "°F";                                                  // THEN the text of the p element becomes the day 5 temperature
+            day5Conditions.appendChild(day5Temp);                                                                                   // THEN the p element is appended to the day 5 conditions section
 
-            // day 5 forecast
-            let day5Info = document.createElement("h3");
-            day5Info.innerHTML = data.list[39].dt_txt;
-            let day5Icon = document.createElement("img");
-            day5Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[39].weather[0].icon}.png`);
-            day5Info.appendChild(day5Icon);
-            day5Conditions.appendChild(day5Info);
+            let day5Wind = document.createElement("p");                                                                             // THEN a p element is created
+            day5Wind.innerHTML = "Wind speed: " + data.list[39].wind.speed + " MPH";                                                // THEN the text of the p element becomes the day 5 wind speed
+            day5Conditions.appendChild(day5Wind);                                                                                   // THEN the p element is appended to the day 5 conditions section
 
-            let day5Temp = document.createElement("p");
-            day5Temp.innerHTML = "Temperature: " + data.list[39].main.temp + "°F";
-            day5Conditions.appendChild(day5Temp);
-
-            let day5Wind = document.createElement("p");
-            day5Wind.innerHTML = "Wind speed: " + data.list[39].wind.speed + " MPH";
-            day5Conditions.appendChild(day5Wind);
-
-            let day5Humidity = document.createElement("p");
-            day5Humidity.innerHTML = "Humidity: " + data.list[39].main.humidity + "%";
-            day5Conditions.appendChild(day5Humidity);
+            let day5Humidity = document.createElement("p");                                                                         // THEN a p element is created
+            day5Humidity.innerHTML = "Humidity: " + data.list[39].main.humidity + "%";                                              // THEN the text of the p element becomes the day 5 humidity
+            day5Conditions.appendChild(day5Humidity);                                                                               // THEN the p element is appended to the day 5 conditions section
         })
-        .catch(function (error) {
-            console.log("There was a problem with the fetch operation");
+        .catch(function (error) {                                                                                                   // IF the API fetch is unsuccessful
+            console.log("There was a problem with the fetch operation");                                                            // THEN the console will log this
         });
 }
