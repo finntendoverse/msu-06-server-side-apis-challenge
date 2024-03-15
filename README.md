@@ -23,7 +23,7 @@ THEN I am again presented with current and future conditions for that city
 N/A
 
 ## Deployed Application
-[Deployed Application Link](finntendoverse.github.io/msu-06-server-side-apis-challenge/)
+[Deployed Application Link]()
 
 ![Deployed Application](/assets/img/deployed-application.png)
 
