@@ -57,20 +57,22 @@ renderSearchHistory = function(userSearch) {                                // W
 displayWeather = function(userSearch) {                                                                                             // WHEN the displayWeather function is called
     const OpenWeatherAPIKey = "46b81e893d3ffba91a8b72288469ebe6";                                                                   // THEN my API key is stored in a variable
     const url = `https://api.openweathermap.org/data/2.5/forecast?q=${userSearch}&appid=${OpenWeatherAPIKey}&units=imperial`        // THEN the link to the API is saved
+    
+    // appending sections
+    let currentConditions = document.querySelector("#current-conditions");                                                          // THEN the current conditions section is stored in a variable
+    let futureForecast = document.querySelector("#future-forecast");                                                                // THEN the future forecast conditions section is stored in a variable
+    let day1Conditions = document.querySelector("#day-1-forecast");                                                                 // THEN the day 1 conditions section is stored in a variable
+    let day2Conditions = document.querySelector("#day-2-forecast");                                                                 // THEN the day 2 conditions section is stored in a variable
+    let day3Conditions = document.querySelector("#day-3-forecast");                                                                 // THEN the day 3 conditions section is stored in a variable
+    let day4Conditions = document.querySelector("#day-4-forecast");                                                                 // THEN the day 4 conditions section is stored in a variable
+    let day5Conditions = document.querySelector("#day-5-forecast");                                                                 // THEN the day 5 conditions section is stored in a variable
+    
     fetch(url)                                                                                                                      // THEN the API is fetched
     .then(function (response) {                                                                                                     // IF the fetch is successful
             return response.json();                                                                                                 // THEN the response is returned as a JSON object
         })
         .then(function (data) {
-            // appending sections
-            let currentConditions = document.querySelector("#current-conditions");                                                  // THEN the current conditions section is stored in a variable
-            let day1Conditions = document.querySelector("#day-1-forecast");                                                         // THEN the day 1 conditions section is stored in a variable
-            let day2Conditions = document.querySelector("#day-2-forecast");                                                         // THEN the day 2 conditions section is stored in a variable
-            let day3Conditions = document.querySelector("#day-3-forecast");                                                         // THEN the day 3 conditions section is stored in a variable
-            let day4Conditions = document.querySelector("#day-3-forecast");                                                         // THEN the day 4 conditions section is stored in a variable
-            let day5Conditions = document.querySelector("#day-3-forecast");                                                         // THEN the day 5 conditions section is stored in a variable
-
-            // remove last search from page
+            // remove forecast of last search from page
             while (currentConditions.firstChild) {                                                                                  // WHILE the current conditions section had appended children
                 currentConditions.removeChild(currentConditions.firstChild);                                                        // THEN they are all removed
             }
@@ -90,9 +92,11 @@ displayWeather = function(userSearch) {                                         
                 day5Conditions.removeChild(day5Conditions.firstChild);                                                              // THEN they are all removed
             }
 
-            // add current forecast to page
+            // add current search forecast to page
+            currentConditions.setAttribute("class", "display-current");                                                             // THEN the current conditions section is given a CSS class for styling
+            
             let currentInfo = document.createElement("h3");                                                                         // THEN an h3 element is created
-            currentInfo.innerHTML = data.city.name + " " + data.list[0].dt_txt;                                                     // THEN the text of the h3 element becomes the city name and current date/time
+            currentInfo.innerHTML = data.city.name + ", today: " + dayjs(data.list[0].dt_txt).format("M/D");                        // THEN the text of the h3 element becomes the city name and current date/time
             let currentIcon = document.createElement("img");                                                                        // THEN an image element is created
             currentIcon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[0].weather[0].icon}.png`);               // THEN the image source becomes the current weather's icon
             currentInfo.appendChild(currentIcon);                                                                                   // THEN the image is appended to the h3
@@ -110,9 +114,12 @@ displayWeather = function(userSearch) {                                         
             currentHumidity.innerHTML = "Humidity: " + data.list[0].main.humidity + "%";                                            // THEN the text of the p element becomes the current humidity
             currentConditions.appendChild(currentHumidity);                                                                         // THEN the p element is appended to the current conditions section
 
-            // add day 1 forecast to page
+            // add future forecast to page
+            futureForecast.setAttribute("class", "display-future");                                                                 // THEN the future forecast section is given a CSS class for styling
+            
+            // day 1
             let day1Info = document.createElement("h3");                                                                            // THEN an h3 element is created
-            day1Info.innerHTML = data.list[7].dt_txt;                                                                               // THEN the text of the h3 element becomes the day 1 date/time
+            day1Info.innerHTML = dayjs(data.list[7].dt_txt).format("dddd, M/D");                                                    // THEN the text of the h3 element becomes the day 1 date/time
             let day1Icon = document.createElement("img");                                                                           // THEN an image element is created
             day1Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[7].weather[0].icon}.png`);                  // THEN the image source becomes the day 1 weather's icon
             day1Info.appendChild(day1Icon);                                                                                         // THEN the image is appended to the h3
@@ -130,9 +137,9 @@ displayWeather = function(userSearch) {                                         
             day1Humidity.innerHTML = "Humidity: " + data.list[7].main.humidity + "%";                                               // THEN the text of the p element becomes the day 1 humidity
             day1Conditions.appendChild(day1Humidity);                                                                               // THEN the p element is appended to the day 1 conditions section
 
-            // add day 2 forecast to page
+            // day 2
             let day2Info = document.createElement("h3");                                                                            // THEN an h3 element is created
-            day2Info.innerHTML = data.list[15].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 2 date/time
+            day2Info.innerHTML = dayjs(data.list[15].dt_txt).format("dddd, M/D");                                                   // THEN the text of the h3 element becomes the day 2 date/time
             let day2Icon = document.createElement("img");                                                                           // THEN an image element is created
             day2Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[15].weather[0].icon}.png`);                 // THEN the image source becomes the day 2 weather's icon
             day2Info.appendChild(day2Icon);                                                                                         // THEN the image is appended to the h3
@@ -150,9 +157,9 @@ displayWeather = function(userSearch) {                                         
             day2Humidity.innerHTML = "Humidity: " + data.list[15].main.humidity + "%";                                              // THEN the text of the p element becomes the day 2 humidity
             day2Conditions.appendChild(day2Humidity);                                                                               // THEN the p element is appended to the day 2 conditions section
 
-            // add day 3 forecast to page
+            // day 3
             let day3Info = document.createElement("h3");                                                                            // THEN an h3 element is created
-            day3Info.innerHTML = data.list[23].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 3 date/time
+            day3Info.innerHTML = dayjs(data.list[23].dt_txt).format("dddd, M/D");                                                   // THEN the text of the h3 element becomes the day 3 date/time
             let day3Icon = document.createElement("img");                                                                           // THEN an image element is created
             day3Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[23].weather[0].icon}.png`);                 // THEN the image source becomes the day 3 weather's icon
             day3Info.appendChild(day3Icon);                                                                                         // THEN the image is appended to the h3
@@ -170,9 +177,9 @@ displayWeather = function(userSearch) {                                         
             day3Humidity.innerHTML = "Humidity: " + data.list[23].main.humidity + "%";                                              // THEN the text of the p element becomes the day 3 humidity
             day3Conditions.appendChild(day3Humidity);                                                                               // THEN the p element is appended to the day 3 conditions section
 
-            // add day 4 forecast to page
+            // day 4
             let day4Info = document.createElement("h3");                                                                            // THEN an h3 element is created
-            day4Info.innerHTML = data.list[31].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 4 date/time
+            day4Info.innerHTML = dayjs(data.list[31].dt_txt).format("dddd, M/D");                                                   // THEN the text of the h3 element becomes the day 4 date/time
             let day4Icon = document.createElement("img");                                                                           // THEN an image element is created
             day4Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[31].weather[0].icon}.png`);                 // THEN the image source becomes the day 4 weather's icon
             day4Info.appendChild(day4Icon);                                                                                         // THEN the image is appended to the h3
@@ -190,9 +197,9 @@ displayWeather = function(userSearch) {                                         
             day4Humidity.innerHTML = "Humidity: " + data.list[31].main.humidity + "%";                                              // THEN the text of the p element becomes the day 4 humidity
             day4Conditions.appendChild(day4Humidity);                                                                               // THEN the p element is appended to the day 4 conditions section
 
-            // add day 5 forecast to page
+            // day 5
             let day5Info = document.createElement("h3");                                                                            // THEN an h3 element is created
-            day5Info.innerHTML = data.list[39].dt_txt;                                                                              // THEN the text of the h3 element becomes the day 5 date/time
+            day5Info.innerHTML = dayjs(data.list[39].dt_txt).format("dddd, M/D");                                                   // THEN the text of the h3 element becomes the day 5 date/time
             let day5Icon = document.createElement("img");                                                                           // THEN an image element is created
             day5Icon.setAttribute("src", `https://openweathermap.org/img/wn/${data.list[39].weather[0].icon}.png`);                 // THEN the image source becomes the day 1 weather's icon
             day5Info.appendChild(day5Icon);                                                                                         // THEN the image is appended to the h3
@@ -211,6 +218,8 @@ displayWeather = function(userSearch) {                                         
             day5Conditions.appendChild(day5Humidity);                                                                               // THEN the p element is appended to the day 5 conditions section
         })
         .catch(function (error) {                                                                                                   // IF the API fetch is unsuccessful
-            console.log("There was a problem with the fetch operation");                                                            // THEN the console will log this
+            alert("you did not enter a valid city.");                                                                               // THEN the user will be alerted that they did not enter a valid city
+            currentConditions.classList.remove("display-current");                                                                  // THEN the styling previously applied to the currentConditions section will be removed
+            futureForecast.classList.remove("display-future");                                                                      // THEN the styling previously applied to the futureForecast section will be removed
         });
 }

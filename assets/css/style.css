@@ -16,17 +16,16 @@ h2 {
   text-align: center;
 }
 
-.container {
+#container {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
 }
 
 h1 {
   text-align: center;
 }
 
-.searches {
+#searches {
   flex: 0 0 20%;
   margin: 0px 40px 0px 40px;
 };
@@ -54,11 +53,35 @@ button {
   width: 100%;
 }
 
-.weather-dashboard {
-  flex: 0 0 80%;
+#weather-dashboard {
+  flex: 1 1 80%;
   margin: 0px 40px 0px 40px;
 }
 
 .city-overview {
   border: 10px solid black;
+}
+
+.display-current {
+  padding: 0px 0px 20px 30px; 
+  border: 5px solid blue;
+  margin-top: 20px;
+}
+
+.display-future {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  border: 5px solid blue;
+  border-top: none;
+}
+
+#day-1-forecast,
+#day-2-forecast,
+#day-3-forecast,
+#day-4-forecast,
+#day-5-forecast {
+  display: inline-block;
+  padding: 0px 0px 0px 30px;
 }
