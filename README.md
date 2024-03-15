@@ -1,4 +1,4 @@
-# Third-Party APIs Challenge: Work Day Scheduler
+# Server-Side APIs Challenge: Weather Dashboard
 
 ## Description
 AS a traveler<br>
@@ -20,12 +20,12 @@ WHEN I click on a city in the search history<br>
 THEN I am again presented with current and future conditions for that city
 
 ## Credits
-city.list.json came from [OpenWeather](https://bulk.openweathermap.org/sample/)
+N/A
 
 ## Deployed Application
-[Deployed Application Link]()
+[Deployed Application Link](finntendoverse.github.io/msu-06-server-side-apis-challenge/)
 
-![Deployed Application]()
+![Deployed Application](/assets/img/deployed-application.png)
 
 ## License
 MIT License
